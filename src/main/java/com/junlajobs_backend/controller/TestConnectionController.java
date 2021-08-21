@@ -10,4 +10,9 @@ public class TestConnectionController {
     public String testGetConnection(){
         return "Connection is Success";
     }
+
+    @PostMapping
+    public String testPostConnection(){
+        return "Connection is Success";
+    }
 }
