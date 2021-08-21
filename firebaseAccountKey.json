@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "junlajob-project",
+  "private_key_id": "b401aad36072d4d949a0f8a8432dcd2fa9c01ac4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCs+6aNZVy3OcZL\nMXRwwbXwXNVmjL+FD4ln7zGQ2Ezt8Tp1JGkhl/MAAmB96ROCzOwiyXuL/Tgp9nwy\nY63C6xfCghNkAdmkipaR+OyaxwU9pUYK5O8ArWLd7kTcU/V/0r42/Uxm+re1FrUT\nl2fLLj+yroGmbYcYZ/bfn0fcGdWk6nQR3veBQS9cwyinyYEGMhTjFRNsq2qBMjjo\nmf/ogP51vM+pyf9W3KOOnECmwvZte0kfqwMLGn9iPXF5KmVO9Lf1VhKK/uxeOEUu\n5mEsSzaAaisniZzCk6WG9Bt+aMCYeeSaehpzL6KY1lSJM3pkV9PDrphe2zORuV2K\nqa0++zb/AgMBAAECggEADXrSwMP8VJ7g7+0bqMm/lsp1KrefGQxb5ciC8UmZvRUG\nPCipNJ/1pLOKt2UZSyES6acPxJnn7YUyqm6QFNdjE5o1Tp7CSgsurpNaRLlrlCEz\n8xdh9IiOYsL1hMHaKKrQfdKBSKkS9b6eP7eVtASXnCHzInf4hhNb7pMn82Pj/STT\nMqKzQ1OI1fod/BxA+7vm0cE+iHxb9WfYVv+Ytf9i3k98RhnD6ThZMm2d9VRtxgy/\nNpEZ4oNByi4HZU53iZFpY98ocMbmh+GjhxzMPm3zgoey7r2k/X7suf/9Tl0t72O3\nGHBdbMu+av6q7ifkRUH+sl4IML30QNeh45df3ni/IQKBgQDagQC+G4l/aGWp8C1r\nDDT4VX1Dw0LXROTZUMHejvascowfgXrIbYYueqfFKA3YRlS7vt3RFp++CEXC3ehg\nuN3YX5aaM2rUDmRajI/7m4YpX5zkIQ4rbJcO5AJWG4125zT46aUxzVD3yo+IPJo7\nTWA/bdOZ2n2GGtExU4aUXhTGUQKBgQDKquOknkVwausoFfzG038qASIZD8YXIdhJ\n8i1CzhTUKHeWw4BjhoYbgv8KNcC9/B2EI5SULHbuMYYda8tTCKH6igpx4QKpCkry\nxGhf48VOEacoU0xi/hFUeObgyb5ZdDtScaXyQ6l4sQxNou09Bum/IDuclGY/5X5R\nP4uW5/zETwKBgQC4ugNUtZci/bGlYAYl0CYgJLZISZYCxJ3tE5czfw4QcK8CG8cg\nF2gvd0bLKbe6tosARrblBAl88SV5P34r916mhPmf2ARizuAMpXU8tBlSdSEAxOlj\n0ORMlHtdLOIGOiXQokckuX3QX5HFDeceZ6YNOd6A3fTtIVLmLsVCPd+2YQKBgQCN\nxloVULrW15TFqAv6sv1kTwKhcY1rpTt/DzFmaG/dsqlmCEGKXhL2r/7mD5BT10h2\npcVMmoZgPrjJYB0Oax2U/HguDfAkfJTNm2RAoD/oSyUaapsnLQDGjQVF/xtvzIWr\nOOGTxo2JZqFqti0r4egm0c+hy5Zz4IErKT7nREZotQKBgCmCSmP6p/0i49ICZnGV\nMnV9M928/PoIA7J5azYv0ZtsqXQ8/ryb8SMfU6RmwCgEc7P/iIZFHfsRSbtCVTTH\nrCO5wHS5l+bwU1cDC5PDxMnpPZ7R6Lzgh1dpBCblox4yX5F62R7tYIwnQBq6G3lX\nAwakhUSY0Vue+iJ96ZzEDGvL\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-z9bxx@junlajob-project.iam.gserviceaccount.com",
+  "client_id": "111439410307554041970",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-z9bxx%40junlajob-project.iam.gserviceaccount.com"
+}
