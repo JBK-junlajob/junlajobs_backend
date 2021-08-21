@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/usermanagement")
+@RequestMapping("/account")
 public class UserManagementController {
 
     @Autowired
