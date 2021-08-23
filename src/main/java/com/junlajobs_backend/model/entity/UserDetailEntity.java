@@ -1,13 +1,9 @@
 package com.junlajobs_backend.model.entity;
 
-import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
-
-@Builder
 @Data
-public class UserDetailEntity implements Serializable {
+public class UserDetailEntity {
     private String address;
     private String email;
     private String fname;

@@ -1,11 +1,11 @@
 package com.junlajobs_backend.controller;
 
-import com.junlajobs_backend.model.entity.UserDetailEntity;
 import com.junlajobs_backend.model.entity.UserEntity;
 import com.junlajobs_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -21,8 +21,8 @@ public class AccountController {
     }
 
     @GetMapping("/getuser/{username}")
-    public UserDetailEntity getUser(@PathVariable String username) throws ExecutionException, InterruptedException {
-        return userService.getUserAccount(username);
+    public UserEntity getUser(@PathVariable String username) throws ExecutionException, InterruptedException {
+        return userService.getUser(username);
     }
 
     @PostMapping("/updateuser")
@@ -33,6 +33,11 @@ public class AccountController {
     @GetMapping("/deleteuser/{username}")
     public  String deleteUser(@PathVariable(value = "username")String username) throws ExecutionException, InterruptedException {
         return userService.deleteUser(username);
+    }
+
+    @GetMapping("/getalluser")
+    public List<UserEntity> getAllUser() throws ExecutionException, InterruptedException {
+        return userService.getUserList();
     }
 
 
