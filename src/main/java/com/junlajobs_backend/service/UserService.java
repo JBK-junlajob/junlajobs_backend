@@ -6,7 +6,8 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
-import com.junlajobs_backend.model.UserEntity;
+import com.junlajobs_backend.model.entity.UserDetailEntity;
+import com.junlajobs_backend.model.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
@@ -20,7 +21,7 @@ public class UserService {
     public String saveUser(UserEntity user) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(user.getUsername()).set(user);
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
 
         return colApiFuture.get().getUpdateTime().toString();
     }
@@ -36,12 +37,12 @@ public class UserService {
     public String updateUser(UserEntity user) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(user.getUsername()).set(user);
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
 
         return colApiFuture.get().getUpdateTime().toString();
     }
 
-    public UserEntity getUserAccount(String username) throws ExecutionException, InterruptedException {
+    public UserDetailEntity getUserAccount(String username) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
         DocumentReference documentReference = dbFireStore.collection(COLLECTION_USER).document(username);
@@ -50,13 +51,11 @@ public class UserService {
 
         DocumentSnapshot document=future.get();
 
-        UserEntity userEntity = null;
+        UserDetailEntity userDetailEntity= null;
         if(document.exists()){
-            userEntity = document.toObject(UserEntity.class);
-            return userEntity;
-        }else{
-            return null;
+            userDetailEntity = document.toObject(UserDetailEntity.class);
         }
+        return userDetailEntity;
     }
 
 

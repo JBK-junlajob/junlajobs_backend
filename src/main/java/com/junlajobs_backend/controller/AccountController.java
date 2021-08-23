@@ -1,6 +1,7 @@
 package com.junlajobs_backend.controller;
 
-import com.junlajobs_backend.model.UserEntity;
+import com.junlajobs_backend.model.entity.UserDetailEntity;
+import com.junlajobs_backend.model.entity.UserEntity;
 import com.junlajobs_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class AccountController {
     }
 
     @GetMapping("/getuser/{username}")
-    public  UserEntity getUser(@PathVariable(value = "username")String username) throws ExecutionException, InterruptedException {
+    public UserDetailEntity getUser(@PathVariable String username) throws ExecutionException, InterruptedException {
         return userService.getUserAccount(username);
     }
 
