@@ -8,6 +8,7 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
+import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+@Service
 public class PostService {
     private static final String COLLECTION_POST = "Post";
 

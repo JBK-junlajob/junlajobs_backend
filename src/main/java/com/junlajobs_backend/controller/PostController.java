@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 @RestController
 @RequestMapping("/post")
 public class PostController {
+
     @Autowired
     private PostService postService;
 
