@@ -44,7 +44,7 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws BaseException, ExecutionException, InterruptedException {
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws BaseException {
         String response = userService.login(loginRequest);
         return ResponseEntity.ok(response);
     }

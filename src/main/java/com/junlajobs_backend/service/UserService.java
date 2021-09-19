@@ -110,11 +110,11 @@ public class UserService {
         }
         UserEntity user = getUser(loginRequest.getUsername());
         if(user==null){
-            return "login fail";
+            throw UserException.loginFail();
         }else if(user !=null && passwordEncoder.matches(loginRequest.getPassword(),user.getUserDetail().getPassword())){
             return "login success";
         }
-        return "wrong password";
+        throw UserException.loginFail();
     }
 
 

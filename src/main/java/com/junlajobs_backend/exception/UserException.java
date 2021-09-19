@@ -16,4 +16,8 @@ public class UserException extends BaseException{
         return new UserException("password.request.null");
     }
 
+    public static UserException loginFail(){
+        return new UserException("login.fail");
+    }
+
 }
