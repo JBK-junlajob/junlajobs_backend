@@ -18,12 +18,12 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class PostService {
-    private static final String COLLECTION_POST = "Post";
+    private static final String COLLECTION_Portfolio = "Portfolio";
 
     public String savePost(PostEntity post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_POST).document(post.getPostname()).set(post.getPostDetail());
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_Portfolio).document(post.getPostname()).set(post.getPostDetail());
 
         return colApiFuture.get().getUpdateTime().toString();
     }
@@ -31,7 +31,7 @@ public class PostService {
     public String deletePost(String post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_POST).document(post).delete();
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_Portfolio).document(post).delete();
 
         return colApiFuture.get().getUpdateTime().toString();
     }
@@ -39,14 +39,14 @@ public class PostService {
     public String updatePost(PostEntity post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_POST).document(post.getPostname()).set(post.getPostDetail());
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_Portfolio).document(post.getPostname()).set(post.getPostDetail());
 
         return colApiFuture.get().getUpdateTime().toString();
     }
 
     public PostEntity getPost(String post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = dbFireStore.collection(COLLECTION_POST).document(post);
+        DocumentReference documentReference = dbFireStore.collection(COLLECTION_Portfolio).document(post);
 
         ApiFuture<DocumentSnapshot> future = documentReference.get();
 
@@ -64,7 +64,7 @@ public class PostService {
     public List<PostEntity> getPostList() throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        Iterable<DocumentReference> documentReference = dbFireStore.collection(COLLECTION_POST).listDocuments();
+        Iterable<DocumentReference> documentReference = dbFireStore.collection(COLLECTION_Portfolio).listDocuments();
         Iterator<DocumentReference> iterator=documentReference.iterator();
 
         List<PostEntity> postEntityList = new ArrayList<>();
