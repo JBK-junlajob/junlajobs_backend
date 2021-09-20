@@ -1,0 +1,4 @@
+app:
+  token:
+    secret: s#JunlajobsSecret
+    issuer: BackendService

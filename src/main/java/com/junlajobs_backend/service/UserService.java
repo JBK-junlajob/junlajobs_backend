@@ -28,8 +28,15 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private final TokenService tokenService;
+
     private static final String COLLECTION_USER = "User";
 
+    public UserService(PasswordEncoder passwordEncoder, TokenService tokenService) {
+        this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
+    }
 
     public String saveUser(UserEntity user) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
@@ -112,7 +119,7 @@ public class UserService {
         if(user==null){
             throw UserException.loginFail();
         }else if(user !=null && passwordEncoder.matches(loginRequest.getPassword(),user.getUserDetail().getPassword())){
-            return "login success";
+            return tokenService.tokenize(user);
         }
         throw UserException.loginFail();
     }

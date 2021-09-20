@@ -1,5 +1,7 @@
 package com.junlajobs_backend.config;
 
+import com.junlajobs_backend.config.token.TokenFilterConfigurer;
+import com.junlajobs_backend.service.TokenService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final TokenService tokenService;
+
+    public SecurityConfig(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -29,7 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().disable().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests().antMatchers("/account/register","/account/login","/account/getuser/testapi","/account/saveuser").anonymous()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and().apply(new TokenFilterConfigurer(tokenService));
     }
 
 }
