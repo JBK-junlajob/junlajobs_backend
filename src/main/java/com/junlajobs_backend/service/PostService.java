@@ -8,23 +8,16 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
-import com.junlajobs_backend.model.entity.UserDetailEntity;
-import com.junlajobs_backend.model.entity.UserEntity;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
-import javax.xml.crypto.Data;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -98,10 +91,15 @@ public class PostService {
     }
 
     @SneakyThrows
-    public String editPortfolio(PostEntity editor) {
+    public ResponseEntity<String> editPortfolio(PostEntity editor) {
         PostEntity thisPost = getPost(editor.getPostname());
         thisPost.getPostDetail().setLastUpdate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 
+        //:TODO add error when user is not equal
+        if(!username.equals(thisPost.getPostDetail().getCreator())){
+            return ResponseEntity.badRequest().body("this account is not creator");
+        }
         if (StringUtils.isNotBlank(editor.getPostDetail().getExplanation())) {
             thisPost.getPostDetail().setExplanation(editor.getPostDetail().getExplanation());
         }
@@ -120,6 +118,6 @@ public class PostService {
         if (StringUtils.isNotBlank(editor.getPostDetail().getLongitude())) {
             thisPost.getPostDetail().setLongitude(editor.getPostDetail().getLongitude());
         }
-        return updatePost(thisPost);
+        return ResponseEntity.ok(updatePost(thisPost));
     }
 }

@@ -3,6 +3,7 @@ package com.junlajobs_backend.controller;
 import com.junlajobs_backend.model.entity.PostEntity;
 import com.junlajobs_backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class PostController {
     }
 
     @PostMapping("/edit")
-    public  String editPost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
+    public ResponseEntity<String> editPost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
         return postService.editPortfolio(post);
     }
 }
