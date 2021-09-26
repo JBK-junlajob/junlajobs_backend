@@ -8,10 +8,19 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
+import javax.xml.crypto.Data;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -22,9 +31,9 @@ public class PostService {
 
     public String savePost(PostEntity post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
-
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_Portfolio).document(post.getPostname()).set(post.getPostDetail());
-
+        post.getPostDetail().setCreator(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        post.getPostDetail().setRelease_date(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_Portfolio).document().create(post.getPostDetail());
         return colApiFuture.get().getUpdateTime().toString();
     }
 
