@@ -1,6 +1,7 @@
 package com.junlajobs_backend.controller;
 
 import com.junlajobs_backend.exception.BaseException;
+import com.junlajobs_backend.model.entity.UserDetailEntity;
 import com.junlajobs_backend.model.entity.UserEntity;
 import com.junlajobs_backend.model.request.LoginRequest;
 import com.junlajobs_backend.service.UserService;
@@ -53,6 +54,12 @@ public class AccountController {
     public String register(@RequestBody UserEntity user) throws ExecutionException, InterruptedException {
         return userService.saveUser(user);
     }
+
+    @PostMapping("/edit")
+    public String register(@RequestBody UserDetailEntity detail){
+        return userService.editUser(detail);
+    }
+
 
 
 }
