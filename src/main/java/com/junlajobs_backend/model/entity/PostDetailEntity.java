@@ -10,4 +10,5 @@ public class PostDetailEntity {
     private String release_date;
     private String latitude;
     private String longitude;
+    private String lastUpdate;
 }

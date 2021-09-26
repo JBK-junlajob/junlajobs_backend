@@ -38,4 +38,9 @@ public class PostController {
     public List<PostEntity> getAllPost() throws ExecutionException, InterruptedException {
         return postService.getPostList();
     }
+
+    @PostMapping("/edit")
+    public  String editPost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
+        return postService.editPortfolio(post);
+    }
 }

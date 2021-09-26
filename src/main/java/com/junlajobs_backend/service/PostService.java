@@ -8,6 +8,10 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
+import com.junlajobs_backend.model.entity.UserDetailEntity;
+import com.junlajobs_backend.model.entity.UserEntity;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -91,5 +95,31 @@ public class PostService {
         }
 
         return postEntityList;
+    }
+
+    @SneakyThrows
+    public String editPortfolio(PostEntity editor) {
+        PostEntity thisPost = getPost(editor.getPostname());
+        thisPost.getPostDetail().setLastUpdate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+
+        if (StringUtils.isNotBlank(editor.getPostDetail().getExplanation())) {
+            thisPost.getPostDetail().setExplanation(editor.getPostDetail().getExplanation());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getJob_title())) {
+            thisPost.getPostDetail().setJob_title(editor.getPostDetail().getJob_title());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getPrice_start())) {
+            thisPost.getPostDetail().setPrice_start(editor.getPostDetail().getPrice_start());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getPrice_end())) {
+            thisPost.getPostDetail().setPrice_end(editor.getPostDetail().getPrice_end());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getLatitude())) {
+            thisPost.getPostDetail().setLatitude(editor.getPostDetail().getLatitude());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getLongitude())) {
+            thisPost.getPostDetail().setLongitude(editor.getPostDetail().getLongitude());
+        }
+        return updatePost(thisPost);
     }
 }
