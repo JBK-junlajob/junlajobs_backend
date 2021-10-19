@@ -12,7 +12,9 @@ import com.junlajobs_backend.model.entity.UserDetailEntity;
 import com.junlajobs_backend.model.entity.UserEntity;
 import com.junlajobs_backend.model.request.LoginRequest;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -122,6 +124,32 @@ public class UserService {
             return tokenService.tokenize(user);
         }
         throw UserException.loginFail();
+    }
+
+    @SneakyThrows
+    public String editUser(UserDetailEntity detail){
+       String username  = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+       UserEntity user = getUser(username);
+
+        if(StringUtils.isNotBlank(detail.getAddress())){
+           user.getUserDetail().setAddress(detail.getAddress());
+        }
+        if(StringUtils.isNotBlank(detail.getEmail())){
+            user.getUserDetail().setEmail(detail.getEmail());
+        }
+        if(StringUtils.isNotBlank(detail.getFname())){
+            user.getUserDetail().setFname(detail.getFname());
+        }
+        if(StringUtils.isNotBlank(detail.getLname())){
+            user.getUserDetail().setLname(detail.getLname());
+        }
+        if(StringUtils.isNotBlank(detail.getPassword())){
+            user.getUserDetail().setPassword(passwordEncoder.encode(detail.getPassword()));
+        }
+        if(StringUtils.isNotBlank(detail.getPhone())){
+            user.getUserDetail().setPhone(detail.getPhone());
+        }
+        return updateUser(user);
     }
 
 

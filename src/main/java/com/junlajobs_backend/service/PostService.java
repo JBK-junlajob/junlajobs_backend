@@ -8,9 +8,15 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,9 +28,9 @@ public class PostService {
 
     public String savePost(PostEntity post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
-
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_Portfolio).document(post.getPostname()).set(post.getPostDetail());
-
+        post.getPostDetail().setCreator(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        post.getPostDetail().setRelease_date(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_Portfolio).document().create(post.getPostDetail());
         return colApiFuture.get().getUpdateTime().toString();
     }
 
@@ -82,5 +88,36 @@ public class PostService {
         }
 
         return postEntityList;
+    }
+
+    @SneakyThrows
+    public ResponseEntity<String> editPortfolio(PostEntity editor) {
+        PostEntity thisPost = getPost(editor.getPostname());
+        thisPost.getPostDetail().setLastUpdate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+
+        //:TODO add error when user is not equal
+        if(!username.equals(thisPost.getPostDetail().getCreator())){
+            return ResponseEntity.badRequest().body("this account is not creator");
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getExplanation()) && editor.getPostDetail().getExplanation()!=null) {
+            thisPost.getPostDetail().setExplanation(editor.getPostDetail().getExplanation());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getJob_title()) && editor.getPostDetail().getJob_title()!=null) {
+            thisPost.getPostDetail().setJob_title(editor.getPostDetail().getJob_title());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getPrice_start()) && editor.getPostDetail().getPrice_start()!=null) {
+            thisPost.getPostDetail().setPrice_start(editor.getPostDetail().getPrice_start());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getPrice_end()) && editor.getPostDetail().getPrice_end()!=null) {
+            thisPost.getPostDetail().setPrice_end(editor.getPostDetail().getPrice_end());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getLatitude()) && editor.getPostDetail().getLatitude()!=null) {
+            thisPost.getPostDetail().setLatitude(editor.getPostDetail().getLatitude());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getLongitude()) && editor.getPostDetail().getLongitude()!=null) {
+            thisPost.getPostDetail().setLongitude(editor.getPostDetail().getLongitude());
+        }
+        return ResponseEntity.ok(updatePost(thisPost));
     }
 }

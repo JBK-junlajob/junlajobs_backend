@@ -3,6 +3,7 @@ package com.junlajobs_backend.controller;
 import com.junlajobs_backend.model.entity.PostEntity;
 import com.junlajobs_backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,5 +38,10 @@ public class PostController {
     @GetMapping("/getallpost")
     public List<PostEntity> getAllPost() throws ExecutionException, InterruptedException {
         return postService.getPostList();
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<String> editPost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
+        return postService.editPortfolio(post);
     }
 }

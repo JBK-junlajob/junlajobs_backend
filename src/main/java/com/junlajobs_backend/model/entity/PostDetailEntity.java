@@ -8,5 +8,7 @@ public class PostDetailEntity {
     private String price_end;
     private String price_start;
     private String release_date;
-
+    private String latitude;
+    private String longitude;
+    private String lastUpdate;
 }
