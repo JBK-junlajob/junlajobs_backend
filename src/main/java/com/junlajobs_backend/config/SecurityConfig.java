@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //:TODO add security config
         http.cors().disable().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests().antMatchers("/account/register","/account/login","/account/getuser/testapi","/account/saveuser").anonymous()
+                .and().authorizeRequests().antMatchers("/account/register","/account/login","/account/getuser/testapi","/account/saveuser","/test-con","/actuator/**").anonymous()
                 .anyRequest().authenticated()
                 .and().apply(new TokenFilterConfigurer(tokenService));
     }
