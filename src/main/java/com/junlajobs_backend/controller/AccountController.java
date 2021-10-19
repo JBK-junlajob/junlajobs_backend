@@ -56,7 +56,7 @@ public class AccountController {
     }
 
     @PostMapping("/edit")
-    public String register(@RequestBody UserDetailEntity detail){
+    public String register(@RequestBody UserDetailEntity detail) {
         return userService.editUser(detail);
     }
 

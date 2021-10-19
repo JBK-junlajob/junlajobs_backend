@@ -100,22 +100,22 @@ public class PostService {
         if(!username.equals(thisPost.getPostDetail().getCreator())){
             return ResponseEntity.badRequest().body("this account is not creator");
         }
-        if (StringUtils.isNotBlank(editor.getPostDetail().getExplanation()) && editor.getPostDetail().getExplanation()!=null) {
+        if (StringUtils.isNotBlank(editor.getPostDetail().getExplanation())) {
             thisPost.getPostDetail().setExplanation(editor.getPostDetail().getExplanation());
         }
-        if (StringUtils.isNotBlank(editor.getPostDetail().getJob_title()) && editor.getPostDetail().getJob_title()!=null) {
+        if (StringUtils.isNotBlank(editor.getPostDetail().getJob_title())) {
             thisPost.getPostDetail().setJob_title(editor.getPostDetail().getJob_title());
         }
-        if (StringUtils.isNotBlank(editor.getPostDetail().getPrice_start()) && editor.getPostDetail().getPrice_start()!=null) {
+        if (StringUtils.isNotBlank(editor.getPostDetail().getPrice_start())) {
             thisPost.getPostDetail().setPrice_start(editor.getPostDetail().getPrice_start());
         }
-        if (StringUtils.isNotBlank(editor.getPostDetail().getPrice_end()) && editor.getPostDetail().getPrice_end()!=null) {
+        if (StringUtils.isNotBlank(editor.getPostDetail().getPrice_end())) {
             thisPost.getPostDetail().setPrice_end(editor.getPostDetail().getPrice_end());
         }
-        if (StringUtils.isNotBlank(editor.getPostDetail().getLatitude()) && editor.getPostDetail().getLatitude()!=null) {
+        if (StringUtils.isNotBlank(editor.getPostDetail().getLatitude())) {
             thisPost.getPostDetail().setLatitude(editor.getPostDetail().getLatitude());
         }
-        if (StringUtils.isNotBlank(editor.getPostDetail().getLongitude()) && editor.getPostDetail().getLongitude()!=null) {
+        if (StringUtils.isNotBlank(editor.getPostDetail().getLongitude())) {
             thisPost.getPostDetail().setLongitude(editor.getPostDetail().getLongitude());
         }
         return ResponseEntity.ok(updatePost(thisPost));

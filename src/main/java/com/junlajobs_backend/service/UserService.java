@@ -27,13 +27,11 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class UserService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+        private static final String COLLECTION_USER = "User";
     @Autowired
     private final TokenService tokenService;
-
-    private static final String COLLECTION_USER = "User";
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserService(PasswordEncoder passwordEncoder, TokenService tokenService) {
         this.passwordEncoder = passwordEncoder;
@@ -41,6 +39,7 @@ public class UserService {
     }
 
     public String saveUser(UserEntity user) throws ExecutionException, InterruptedException {
+        //TODO: check duplicate username
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
         String passwordEncoded = passwordEncoder.encode(user.getUserDetail().getPassword());
@@ -111,42 +110,43 @@ public class UserService {
     @SneakyThrows
     public String login(LoginRequest loginRequest) throws BaseException {
         //TODO:update to encode and generate jwt
-        if (loginRequest == null){
+        if (loginRequest == null) {
             throw UserException.loginRequestIsNull();
         }
-        if(loginRequest.getPassword() == null){
-            throw  UserException.loginPasswordIsNull();
+        if (loginRequest.getPassword() == null) {
+            throw UserException.loginPasswordIsNull();
         }
         UserEntity user = getUser(loginRequest.getUsername());
-        if(user==null){
+        if (user == null) {
             throw UserException.loginFail();
-        }else if(user !=null && passwordEncoder.matches(loginRequest.getPassword(),user.getUserDetail().getPassword())){
+        } else if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getUserDetail().getPassword())) {
             return tokenService.tokenize(user);
         }
         throw UserException.loginFail();
     }
 
     @SneakyThrows
-    public String editUser(UserDetailEntity detail){
-       String username  = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-       UserEntity user = getUser(username);
+    public String editUser(UserDetailEntity detail) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        UserEntity user = getUser(username);
 
-        if(StringUtils.isNotBlank(detail.getAddress())){
-           user.getUserDetail().setAddress(detail.getAddress());
+        if (StringUtils.isNotBlank(detail.getAddress()) && detail.getAddress() != null) {
+            user.getUserDetail().setAddress(detail.getAddress());
         }
-        if(StringUtils.isNotBlank(detail.getEmail())){
+        if (StringUtils.isNotBlank(detail.getEmail()) && detail.getAddress() != null) {
             user.getUserDetail().setEmail(detail.getEmail());
         }
-        if(StringUtils.isNotBlank(detail.getFname())){
+        if (StringUtils.isNotBlank(detail.getFname()) && detail.getAddress() != null) {
             user.getUserDetail().setFname(detail.getFname());
         }
-        if(StringUtils.isNotBlank(detail.getLname())){
+        if (StringUtils.isNotBlank(detail.getLname()) && detail.getAddress() != null) {
             user.getUserDetail().setLname(detail.getLname());
         }
-        if(StringUtils.isNotBlank(detail.getPassword())){
+        //TODO: check correct password
+        if (StringUtils.isNotBlank(detail.getPassword()) && detail.getAddress() != null) {
             user.getUserDetail().setPassword(passwordEncoder.encode(detail.getPassword()));
         }
-        if(StringUtils.isNotBlank(detail.getPhone())){
+        if (StringUtils.isNotBlank(detail.getPhone()) && detail.getAddress() != null) {
             user.getUserDetail().setPhone(detail.getPhone());
         }
         return updateUser(user);
