@@ -1,10 +1,9 @@
-package com.junlajobs_backend.model;
+package com.junlajobs_backend.model.entity;
 
 import lombok.Data;
 
 @Data
-public class UserEntity {
-    private String username;
+public class UserDetailEntity {
     private String address;
     private String email;
     private String fname;
