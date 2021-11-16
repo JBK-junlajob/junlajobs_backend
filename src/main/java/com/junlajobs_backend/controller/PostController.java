@@ -21,8 +21,8 @@ public class PostController {
     }
 
     @GetMapping("/getpost/{postname}")
-    public PostEntity getPost(@PathVariable String postname) throws ExecutionException, InterruptedException {
-        return postService.getPost(postname);
+    public PostEntity getPost(@PathVariable String postId) throws ExecutionException, InterruptedException {
+        return postService.getPost(postId);
     }
 
     @PostMapping("/updatepost")
@@ -44,4 +44,5 @@ public class PostController {
     public ResponseEntity<String> editPost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
         return postService.editPortfolio(post);
     }
+
 }

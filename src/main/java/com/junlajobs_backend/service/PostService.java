@@ -1,6 +1,7 @@
 package com.junlajobs_backend.service;
 
 import com.google.api.core.ApiFuture;
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
@@ -29,7 +30,8 @@ public class PostService {
     public String savePost(PostEntity post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
         post.getPostDetail().setCreator(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        post.getPostDetail().setRelease_date(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+        post.getPostDetail().setRelease_date(Timestamp.now().toDate());
+        post.getPostDetail().setLike(0);
         ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_Portfolio).document().create(post.getPostDetail());
         return colApiFuture.get().getUpdateTime().toString();
     }
@@ -50,9 +52,9 @@ public class PostService {
         return colApiFuture.get().getUpdateTime().toString();
     }
 
-    public PostEntity getPost(String post) throws ExecutionException, InterruptedException {
+    public PostEntity getPost(String postId) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = dbFireStore.collection(COLLECTION_Portfolio).document(post);
+        DocumentReference documentReference = dbFireStore.collection(COLLECTION_Portfolio).document(postId);
 
         ApiFuture<DocumentSnapshot> future = documentReference.get();
 
@@ -62,7 +64,6 @@ public class PostService {
         if(document.exists()){
             postEntity.setPostname(document.getId());
             postEntity.setPostDetail(document.toObject(PostDetailEntity.class));
-
         }
         return postEntity;
     }
