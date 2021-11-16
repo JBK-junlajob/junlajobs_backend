@@ -20,7 +20,7 @@ public class PostController {
         return postService.savePost(post);
     }
 
-    @GetMapping("/getpost/{postname}")
+    @GetMapping("/getpost/{postId}")
     public PostEntity getPost(@PathVariable String postId) throws ExecutionException, InterruptedException {
         return postService.getPost(postId);
     }

@@ -4,4 +4,5 @@ import lombok.Data;
 public class PostEntity {
     private String postname;
     private PostDetailEntity postDetail;
+    private boolean userAlreadyLike;
 }

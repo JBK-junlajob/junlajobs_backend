@@ -21,8 +21,9 @@ public class LikeController {
     private LikeService likeService;
 
 
-    @GetMapping
+    @GetMapping("/likethispost/{postId}")
     public ResponseEntity<String> likeThisPost(@PathVariable String postId) throws ExecutionException, InterruptedException {
         return likeService.likeThisPost(postId);
     }
+
 }

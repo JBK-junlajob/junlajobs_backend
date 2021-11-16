@@ -11,6 +11,7 @@ import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,11 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class PostService {
+
     private static final String COLLECTION_Portfolio = "Portfolio";
+
+    @Autowired
+    private LikeService likeService;
 
     public String savePost(PostEntity post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
@@ -64,6 +69,7 @@ public class PostService {
         if(document.exists()){
             postEntity.setPostname(document.getId());
             postEntity.setPostDetail(document.toObject(PostDetailEntity.class));
+            postEntity.setUserAlreadyLike(likeService.userLikeThisPost(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString(),postId));
         }
         return postEntity;
     }
