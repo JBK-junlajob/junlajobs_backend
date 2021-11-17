@@ -3,8 +3,8 @@ package com.junlajobs_backend.service;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import com.junlajobs_backend.helper.CollectionName;
 import com.junlajobs_backend.model.entity.LikeEntity;
-import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class LikeService {
-
-    private static final String COLLECTION_LIKE = "Like";
 
     @Autowired
     private PostService postService;
@@ -31,20 +29,20 @@ public class LikeService {
         String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 
         //check user alreadu like ?
-        boolean likeOrNot = userLikeThisPost(user,postId);
+        boolean likeOrNot = userLikeThisPost(user, postId);
 
-        if(BooleanUtils.isTrue(likeOrNot)){
+        if (BooleanUtils.isTrue(likeOrNot)) {
             Firestore dbFireStore = FirestoreClient.getFirestore();
 
-            CollectionReference like = dbFireStore.collection(COLLECTION_LIKE);
-            Query query = like.whereEqualTo("user",user).whereEqualTo("postId",postId);
+            CollectionReference like = dbFireStore.collection(CollectionName.COLLECTION_LIKE);
+            Query query = like.whereEqualTo("user", user).whereEqualTo("postId", postId);
             ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-                ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_LIKE).document(document.getId()).delete();
+                ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_LIKE).document(document.getId()).delete();
             }
 
-            newTotalLike = instance.getPostDetail().getLike()-1;
+            newTotalLike = instance.getPostDetail().getLike() - 1;
             instance.getPostDetail().setLike(newTotalLike);
             postService.updatePost(instance);
 
@@ -52,30 +50,30 @@ public class LikeService {
         }
 
         //set new total like and save
-        newTotalLike = 1+instance.getPostDetail().getLike();
+        newTotalLike = 1 + instance.getPostDetail().getLike();
         instance.getPostDetail().setLike(newTotalLike);
         postService.updatePost(instance);
 
         //save user and post id to collection like
 
-        saveNewLike(user,postId);
+        saveNewLike(user, postId);
 
         return ResponseEntity.ok("now you like this post");
     }
 
-    public String saveNewLike(String user,String postId) throws ExecutionException, InterruptedException {
+    public String saveNewLike(String user, String postId) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
         LikeEntity likeEntity = LikeEntity.builder().user(user).postId(postId).build();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_LIKE).document().create(likeEntity);
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_LIKE).document().create(likeEntity);
         return colApiFuture.get().getUpdateTime().toString();
     }
 
-    public boolean userLikeThisPost(String user,String postId) throws ExecutionException, InterruptedException {
+    public boolean userLikeThisPost(String user, String postId) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        CollectionReference like = dbFireStore.collection(COLLECTION_LIKE);
-        Query query = like.whereEqualTo("user",user).whereEqualTo("postId",postId);
+        CollectionReference like = dbFireStore.collection(CollectionName.COLLECTION_LIKE);
+        Query query = like.whereEqualTo("user", user).whereEqualTo("postId", postId);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
         if (!querySnapshot.get().isEmpty()) {

@@ -3,13 +3,11 @@ package com.junlajobs_backend.model.request;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 @Builder
-public class CommentRequest {
+public class SecCommentRequest {
 
-    private String postId;
+    private String mainCommentId ;
     private String comment;
 
 }

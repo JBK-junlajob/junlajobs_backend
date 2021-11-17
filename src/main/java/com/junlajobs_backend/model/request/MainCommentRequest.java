@@ -1,4 +1,4 @@
-package com.junlajobs_backend.model.entity;
+package com.junlajobs_backend.model.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,9 +6,10 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class CommentEntity {
-    private String user;
+@Builder
+public class MainCommentRequest {
+
     private String postId;
     private String comment;
-    private Date release_date;
+
 }

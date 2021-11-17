@@ -8,6 +8,7 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.exception.BaseException;
 import com.junlajobs_backend.exception.UserException;
+import com.junlajobs_backend.helper.CollectionName;
 import com.junlajobs_backend.model.entity.UserDetailEntity;
 import com.junlajobs_backend.model.entity.UserEntity;
 import com.junlajobs_backend.model.request.LoginRequest;
@@ -27,7 +28,6 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class UserService {
 
-        private static final String COLLECTION_USER = "User";
     @Autowired
     private final TokenService tokenService;
     @Autowired
@@ -45,7 +45,7 @@ public class UserService {
         String passwordEncoded = passwordEncoder.encode(user.getUserDetail().getPassword());
         user.getUserDetail().setPassword(passwordEncoded);
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
 
         return colApiFuture.get().getUpdateTime().toString();
     }
@@ -53,7 +53,7 @@ public class UserService {
     public String deleteUser(String username) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(username).delete();
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_USER).document(username).delete();
 
         return colApiFuture.get().getUpdateTime().toString();
     }
@@ -61,14 +61,14 @@ public class UserService {
     public String updateUser(UserEntity user) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
 
         return colApiFuture.get().getUpdateTime().toString();
     }
 
     public UserEntity getUser(String username) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = dbFireStore.collection(COLLECTION_USER).document(username);
+        DocumentReference documentReference = dbFireStore.collection(CollectionName.COLLECTION_USER).document(username);
 
         ApiFuture<DocumentSnapshot> future = documentReference.get();
 
@@ -87,7 +87,7 @@ public class UserService {
     public List<UserEntity> getUserList() throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        Iterable<DocumentReference> documentReference = dbFireStore.collection(COLLECTION_USER).listDocuments();
+        Iterable<DocumentReference> documentReference = dbFireStore.collection(CollectionName.COLLECTION_USER).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
 
         List<UserEntity> userEntityList = new ArrayList<>();
