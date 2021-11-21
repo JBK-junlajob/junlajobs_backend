@@ -8,6 +8,8 @@ public class CollectionName {
 
     public static final String COLLECTION_Portfolio = "Portfolio";
 
+    public static final String COLLECTION_RECRUIT = "Recruit";
+
     public static final String COLLECTION_JOBCATEGORY = "Job_category";
 
     public static final String COLLECTION_JOBTYPE = "Job_type";

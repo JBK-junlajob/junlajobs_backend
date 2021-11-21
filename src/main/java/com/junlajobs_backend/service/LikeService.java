@@ -22,7 +22,7 @@ public class LikeService {
 
     public ResponseEntity<String> likeThisPost(String postId) throws ExecutionException, InterruptedException {
         //ดึงข้อมูลเก่า
-        PostEntity instance = postService.getPost(postId);
+        PostEntity instance = postService.getPort(postId);
         int newTotalLike;
 
         //get current user
@@ -44,7 +44,7 @@ public class LikeService {
 
             newTotalLike = instance.getPostDetail().getLike() - 1;
             instance.getPostDetail().setLike(newTotalLike);
-            postService.updatePost(instance);
+            postService.updatePort(instance);
 
             return ResponseEntity.ok("already unlike");
         }
@@ -52,7 +52,7 @@ public class LikeService {
         //set new total like and save
         newTotalLike = 1 + instance.getPostDetail().getLike();
         instance.getPostDetail().setLike(newTotalLike);
-        postService.updatePost(instance);
+        postService.updatePort(instance);
 
         //save user and post id to collection like
 

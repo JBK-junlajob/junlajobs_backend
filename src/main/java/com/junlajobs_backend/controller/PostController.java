@@ -15,34 +15,66 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/savepost")
+    @PostMapping("/saveport")
     public  String savePost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
-        return postService.savePost(post);
+        return postService.savePort(post);
     }
 
-    @GetMapping("/getpost/{postId}")
+    @GetMapping("/getport/{postId}")
     public PostEntity getPost(@PathVariable String postId) throws ExecutionException, InterruptedException {
-        return postService.getPost(postId);
+        return postService.getPort(postId);
     }
 
-    @PostMapping("/updatepost")
+    @PostMapping("/updateport")
     public  String updatepost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
-        return postService.updatePost(post);
+        return postService.updatePort(post);
     }
 
-    @GetMapping("/deletepost/{postname}")
+    @GetMapping("/deleteport/{postname}")
     public  String deletePost(@PathVariable(value = "postname")String postname) throws ExecutionException, InterruptedException {
-        return postService.deletePost(postname);
+        return postService.deletePort(postname);
     }
 
-    @GetMapping("/getallpost")
+    @GetMapping("/getallport")
     public List<PostEntity> getAllPost() throws ExecutionException, InterruptedException {
-        return postService.getPostList();
+        return postService.getPortList();
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/editport")
     public ResponseEntity<String> editPost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
         return postService.editPortfolio(post);
     }
+
+    //recruit
+    @PostMapping("/saverec")
+    public  String saveRec(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
+        return postService.saveRec(post);
+    }
+
+    @GetMapping("/getrec/{postId}")
+    public PostEntity getRec(@PathVariable String postId) throws ExecutionException, InterruptedException {
+        return postService.getRec(postId);
+    }
+
+    @PostMapping("/updaterec")
+    public  String updateRec(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
+        return postService.updateRec(post);
+    }
+
+    @GetMapping("/deleterec/{postname}")
+    public  String deleteRec(@PathVariable(value = "postname")String postname) throws ExecutionException, InterruptedException {
+        return postService.deleteRec(postname);
+    }
+
+    @GetMapping("/getallrec")
+    public List<PostEntity> getAllRec() throws ExecutionException, InterruptedException {
+        return postService.getRecList();
+    }
+
+    @PostMapping("/editrec")
+    public ResponseEntity<String> editRec(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
+        return postService.editRec(post);
+    }
+
 
 }
