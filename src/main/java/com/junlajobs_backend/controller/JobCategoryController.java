@@ -28,4 +28,5 @@ public class JobCategoryController {
     public List<PostEntity> listPortFromType(@PathVariable(value = "category") String category) throws ExecutionException, InterruptedException {
         return jobCategoryService.getPortfolioListByType(category);
     }
+
 }

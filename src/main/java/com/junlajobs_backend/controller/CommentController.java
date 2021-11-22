@@ -33,6 +33,8 @@ public class CommentController {
         return commentService.deleteMainComment(commentId);
     }
 
+    //คอมเม้นรอง
+
     @PostMapping("/createseccomment")
     public String createSecComment(@RequestBody SecCommentRequest commentRequest) throws ExecutionException, InterruptedException {
         return commentService.createSecComment(commentRequest);

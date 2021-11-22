@@ -51,4 +51,21 @@ public class JobTypeService {
 
         return portfolioOfthisType;
     }
+
+    public List<String> getCategoryInThisType(String type) throws ExecutionException, InterruptedException {
+        Firestore dbFireStore = FirestoreClient.getFirestore();
+
+        CollectionReference portfolio = dbFireStore.collection(CollectionName.COLLECTION_JOBCATEGORY);
+        Query query = portfolio.whereEqualTo("job_type", type);
+        List<String> category = new ArrayList<>();
+
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+
+            category.add(document.getId());
+        }
+
+        return category;
+    }
 }
