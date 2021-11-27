@@ -30,12 +30,12 @@ public class PostService {
     @Autowired
     private LikeService likeService;
 
-    public String savePort(PostEntity post) throws ExecutionException, InterruptedException {
+    public String savePort(PostDetailEntity post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
-        post.getPostDetail().setCreator(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        post.getPostDetail().setRelease_date(Timestamp.now().toDate());
-        post.getPostDetail().setLike(0);
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_Portfolio).document().create(post.getPostDetail());
+        post.setCreator(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        post.setRelease_date(Timestamp.now().toDate());
+        post.setLike(0);
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_Portfolio).document().create(post);
         return colApiFuture.get().getUpdateTime().toString();
     }
 
@@ -98,7 +98,7 @@ public class PostService {
     @SneakyThrows
     public ResponseEntity<String> editPortfolio(PostEntity editor) {
         PostEntity thisPost = getPort(editor.getPostname());
-        thisPost.getPostDetail().setLastUpdate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+        thisPost.getPostDetail().setLastUpdate(Timestamp.now().toDate());
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 
         if (!username.equals(thisPost.getPostDetail().getCreator())) {
@@ -131,12 +131,12 @@ public class PostService {
 
     //recruit
 
-    public String saveRec(PostEntity post) throws ExecutionException, InterruptedException {
+    public String saveRec(PostDetailEntity post) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
-        post.getPostDetail().setCreator(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        post.getPostDetail().setRelease_date(Timestamp.now().toDate());
-        post.getPostDetail().setLike(0);
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_RECRUIT).document().create(post.getPostDetail());
+        post.setCreator(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        post.setRelease_date(Timestamp.now().toDate());
+        post.setLike(0);
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_RECRUIT).document().create(post);
         return colApiFuture.get().getUpdateTime().toString();
     }
 
@@ -199,7 +199,7 @@ public class PostService {
     @SneakyThrows
     public ResponseEntity<String> editRec(PostEntity editor) {
         PostEntity thisPost = getRec(editor.getPostname());
-        thisPost.getPostDetail().setLastUpdate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+        thisPost.getPostDetail().setLastUpdate(Timestamp.now().toDate());
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 
         if (!username.equals(thisPost.getPostDetail().getCreator())) {

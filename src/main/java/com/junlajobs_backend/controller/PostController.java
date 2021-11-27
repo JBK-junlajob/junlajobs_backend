@@ -1,5 +1,6 @@
 package com.junlajobs_backend.controller;
 
+import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
 import com.junlajobs_backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("/saveport")
-    public  String savePost(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
+    public  String savePost(@RequestBody PostDetailEntity post) throws ExecutionException, InterruptedException {
         return postService.savePort(post);
     }
 
@@ -47,7 +48,7 @@ public class PostController {
 
     //recruit
     @PostMapping("/saverec")
-    public  String saveRec(@RequestBody PostEntity post) throws ExecutionException, InterruptedException {
+    public  String saveRec(@RequestBody PostDetailEntity post) throws ExecutionException, InterruptedException {
         return postService.saveRec(post);
     }
 

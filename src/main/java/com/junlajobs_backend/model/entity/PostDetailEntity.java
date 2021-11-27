@@ -15,7 +15,7 @@ public class PostDetailEntity  {
     private Date release_date;
     private String latitude;
     private String longitude;
-    private String lastUpdate;
+    private Date lastUpdate;
     private String type;
     private String category;
     private int like;
