@@ -11,4 +11,5 @@ public class UserDetailEntity {
     private String password;
     private String phone;
     private String profilePicUrl;
+    private String uid;
 }
