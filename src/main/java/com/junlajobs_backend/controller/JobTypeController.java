@@ -24,4 +24,9 @@ public class JobTypeController {
     public List<PostEntity> listPortFromType(@PathVariable(value = "type") String type) throws ExecutionException, InterruptedException {
         return jobTypeService.getPortfolioListByType(type);
     }
+
+    @GetMapping("/categoryinthistype/{type}")
+    public List<String> getCategoryInThisType(@PathVariable(value = "type") String type) throws ExecutionException, InterruptedException {
+        return jobTypeService.getCategoryInThisType(type);
+    }
 }

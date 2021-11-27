@@ -5,9 +5,13 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.exception.BaseException;
 import com.junlajobs_backend.exception.UserException;
+import com.junlajobs_backend.helper.CollectionName;
 import com.junlajobs_backend.model.entity.UserDetailEntity;
 import com.junlajobs_backend.model.entity.UserEntity;
 import com.junlajobs_backend.model.request.LoginRequest;
@@ -18,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +32,6 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class UserService {
 
-        private static final String COLLECTION_USER = "User";
     @Autowired
     private final TokenService tokenService;
     @Autowired
@@ -39,13 +43,17 @@ public class UserService {
     }
 
     public String saveUser(UserEntity user) throws ExecutionException, InterruptedException {
-        //TODO: check duplicate username
+        // check duplicate username
+        if(this.getUser(user.getUsername())!=null){
+            return null;
+        }
+
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
         String passwordEncoded = passwordEncoder.encode(user.getUserDetail().getPassword());
         user.getUserDetail().setPassword(passwordEncoded);
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
 
         return colApiFuture.get().getUpdateTime().toString();
     }
@@ -53,7 +61,7 @@ public class UserService {
     public String deleteUser(String username) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(username).delete();
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_USER).document(username).delete();
 
         return colApiFuture.get().getUpdateTime().toString();
     }
@@ -61,14 +69,14 @@ public class UserService {
     public String updateUser(UserEntity user) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
+        ApiFuture<WriteResult> colApiFuture = dbFireStore.collection(CollectionName.COLLECTION_USER).document(user.getUsername()).set(user.getUserDetail());
 
         return colApiFuture.get().getUpdateTime().toString();
     }
 
     public UserEntity getUser(String username) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = dbFireStore.collection(COLLECTION_USER).document(username);
+        DocumentReference documentReference = dbFireStore.collection(CollectionName.COLLECTION_USER).document(username);
 
         ApiFuture<DocumentSnapshot> future = documentReference.get();
 
@@ -87,7 +95,7 @@ public class UserService {
     public List<UserEntity> getUserList() throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        Iterable<DocumentReference> documentReference = dbFireStore.collection(COLLECTION_USER).listDocuments();
+        Iterable<DocumentReference> documentReference = dbFireStore.collection(CollectionName.COLLECTION_USER).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
 
         List<UserEntity> userEntityList = new ArrayList<>();
@@ -109,7 +117,6 @@ public class UserService {
 
     @SneakyThrows
     public String login(LoginRequest loginRequest) throws BaseException {
-        //TODO:update to encode and generate jwt
         if (loginRequest == null) {
             throw UserException.loginRequestIsNull();
         }
@@ -125,31 +132,52 @@ public class UserService {
         throw UserException.loginFail();
     }
 
+
+    public boolean checkOldPassword(String oldPass) throws BaseException, ExecutionException, InterruptedException {
+        if (StringUtils.isBlank(oldPass)) {
+            throw UserException.loginRequestIsNull();
+        }
+        String userPass = this.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString()).getUserDetail().getPassword();
+
+        if( passwordEncoder.matches(oldPass, userPass)) {
+            return true;
+        }
+        return false;
+    }
+
     @SneakyThrows
     public String editUser(UserDetailEntity detail) {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         UserEntity user = getUser(username);
 
-        if (StringUtils.isNotBlank(detail.getAddress()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getAddress())) {
             user.getUserDetail().setAddress(detail.getAddress());
         }
-        if (StringUtils.isNotBlank(detail.getEmail()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getEmail())) {
             user.getUserDetail().setEmail(detail.getEmail());
         }
-        if (StringUtils.isNotBlank(detail.getFname()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getFname())) {
             user.getUserDetail().setFname(detail.getFname());
         }
-        if (StringUtils.isNotBlank(detail.getLname()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getLname())) {
             user.getUserDetail().setLname(detail.getLname());
         }
-        //TODO: check correct password
-        if (StringUtils.isNotBlank(detail.getPassword()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getPassword()) && this.checkOldPassword(detail.getPassword())) {
             user.getUserDetail().setPassword(passwordEncoder.encode(detail.getPassword()));
         }
-        if (StringUtils.isNotBlank(detail.getPhone()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getPhone())) {
             user.getUserDetail().setPhone(detail.getPhone());
         }
+        if (StringUtils.isNotBlank(detail.getProfilePicUrl())) {
+            user.getUserDetail().setProfilePicUrl(detail.getProfilePicUrl());
+        }
         return updateUser(user);
+    }
+
+    public String testFirebaseAuth() throws FirebaseAuthException {
+        FirebaseAuth auth =FirebaseAuth.getInstance();
+        Firestore firestore = FirestoreClient.getFirestore();
+        return "";
     }
 
 

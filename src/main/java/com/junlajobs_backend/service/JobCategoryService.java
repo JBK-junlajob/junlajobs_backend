@@ -3,6 +3,7 @@ package com.junlajobs_backend.service;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import com.junlajobs_backend.helper.CollectionName;
 import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,12 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class JobCategoryService {
 
-    private static final String COLLECTION_JOBCATEGORY = "Job_category";
 
     public List<String> allType() {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
         List<String> typeList = new ArrayList<>();
-        Iterable<DocumentReference> documentReference =  dbFireStore.collection(COLLECTION_JOBCATEGORY).listDocuments();
+        Iterable<DocumentReference> documentReference =  dbFireStore.collection(CollectionName.COLLECTION_JOBCATEGORY).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
 
         while (iterator.hasNext()) {
@@ -32,10 +32,10 @@ public class JobCategoryService {
         return typeList;
     }
 
-    public List<PostEntity> getPortfolioListByType(String category) throws ExecutionException, InterruptedException {
+    public List<PostEntity> getPortfolioListByCategory(String category) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        CollectionReference portfolio = dbFireStore.collection("Portfolio");
+        CollectionReference portfolio = dbFireStore.collection(CollectionName.COLLECTION_Portfolio);
         Query query = portfolio.whereEqualTo("category",category);
         List<PostEntity> portfolioOfthisType = new ArrayList<>();
 

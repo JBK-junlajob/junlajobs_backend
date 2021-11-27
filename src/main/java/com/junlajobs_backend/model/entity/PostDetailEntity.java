@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
-public class PostDetailEntity {
+public class PostDetailEntity  {
     private String creator;
     private String explanation;
     private String job_title;
@@ -15,7 +15,10 @@ public class PostDetailEntity {
     private Date release_date;
     private String latitude;
     private String longitude;
-    private String lastUpdate;
+    private Date lastUpdate;
     private String type;
+    private String category;
     private int like;
+    private String picUrl;
+    private boolean onlineJob;
 }

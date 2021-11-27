@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class LoginRequest {
+public class SecCommentRequest {
 
-    private String username;
-    private String password;
+    private String mainCommentId ;
+    private String comment;
+
 }

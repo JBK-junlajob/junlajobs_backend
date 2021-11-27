@@ -10,4 +10,6 @@ public class UserDetailEntity {
     private String lname;
     private String password;
     private String phone;
+    private String profilePicUrl;
+    private String uid;
 }
