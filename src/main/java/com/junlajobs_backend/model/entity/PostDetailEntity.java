@@ -20,4 +20,5 @@ public class PostDetailEntity  {
     private String category;
     private int like;
     private String picUrl;
+    private boolean onlineJob;
 }
