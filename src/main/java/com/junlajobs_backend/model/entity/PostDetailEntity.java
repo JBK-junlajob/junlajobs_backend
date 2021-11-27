@@ -18,4 +18,5 @@ public class PostDetailEntity {
     private String lastUpdate;
     private String type;
     private int like;
+    private String picUrl;
 }

@@ -101,7 +101,6 @@ public class PostService {
         thisPost.getPostDetail().setLastUpdate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 
-        //:TODO add error when user is not equal
         if (!username.equals(thisPost.getPostDetail().getCreator())) {
             return ResponseEntity.badRequest().body("this account is not creator");
         }
@@ -122,6 +121,9 @@ public class PostService {
         }
         if (StringUtils.isNotBlank(editor.getPostDetail().getLongitude())) {
             thisPost.getPostDetail().setLongitude(editor.getPostDetail().getLongitude());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getPicUrl())) {
+            thisPost.getPostDetail().setPicUrl(editor.getPostDetail().getPicUrl());
         }
         return ResponseEntity.ok(updatePort(thisPost));
     }
@@ -200,7 +202,6 @@ public class PostService {
         thisPost.getPostDetail().setLastUpdate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 
-        //:TODO add error when user is not equal
         if (!username.equals(thisPost.getPostDetail().getCreator())) {
             return ResponseEntity.badRequest().body("this account is not creator");
         }
@@ -221,6 +222,9 @@ public class PostService {
         }
         if (StringUtils.isNotBlank(editor.getPostDetail().getLongitude())) {
             thisPost.getPostDetail().setLongitude(editor.getPostDetail().getLongitude());
+        }
+        if (StringUtils.isNotBlank(editor.getPostDetail().getPicUrl())) {
+            thisPost.getPostDetail().setPicUrl(editor.getPostDetail().getPicUrl());
         }
         return ResponseEntity.ok(updateRec(thisPost));
     }

@@ -39,6 +39,11 @@ public class AccountController {
         return userService.deleteUser(username);
     }
 
+    @GetMapping("/checkoldpassword/{oldpass}")
+    public boolean checkOldPass(@PathVariable(value = "oldpass") String oldPass) throws ExecutionException, InterruptedException, BaseException {
+        return userService.checkOldPassword(oldPass);
+    }
+
     @GetMapping("/getalluser")
     public List<UserEntity> getAllUser() throws ExecutionException, InterruptedException {
         return userService.getUserList();

@@ -109,7 +109,6 @@ public class UserService {
 
     @SneakyThrows
     public String login(LoginRequest loginRequest) throws BaseException {
-        //TODO:update to encode and generate jwt
         if (loginRequest == null) {
             throw UserException.loginRequestIsNull();
         }
@@ -125,29 +124,44 @@ public class UserService {
         throw UserException.loginFail();
     }
 
+
+    public boolean checkOldPassword(String oldPass) throws BaseException, ExecutionException, InterruptedException {
+        if (StringUtils.isBlank(oldPass)) {
+            throw UserException.loginRequestIsNull();
+        }
+        String userPass = this.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString()).getUserDetail().getPassword();
+
+        if( passwordEncoder.matches(oldPass, userPass)) {
+            return true;
+        }
+        return false;
+    }
+
     @SneakyThrows
     public String editUser(UserDetailEntity detail) {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         UserEntity user = getUser(username);
 
-        if (StringUtils.isNotBlank(detail.getAddress()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getAddress())) {
             user.getUserDetail().setAddress(detail.getAddress());
         }
-        if (StringUtils.isNotBlank(detail.getEmail()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getEmail())) {
             user.getUserDetail().setEmail(detail.getEmail());
         }
-        if (StringUtils.isNotBlank(detail.getFname()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getFname())) {
             user.getUserDetail().setFname(detail.getFname());
         }
-        if (StringUtils.isNotBlank(detail.getLname()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getLname())) {
             user.getUserDetail().setLname(detail.getLname());
         }
-        //TODO: check correct password
-        if (StringUtils.isNotBlank(detail.getPassword()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getPassword()) && this.checkOldPassword(detail.getPassword())) {
             user.getUserDetail().setPassword(passwordEncoder.encode(detail.getPassword()));
         }
-        if (StringUtils.isNotBlank(detail.getPhone()) && detail.getAddress() != null) {
+        if (StringUtils.isNotBlank(detail.getPhone())) {
             user.getUserDetail().setPhone(detail.getPhone());
+        }
+        if (StringUtils.isNotBlank(detail.getProfilePicUrl())) {
+            user.getUserDetail().setProfilePicUrl(detail.getProfilePicUrl());
         }
         return updateUser(user);
     }
