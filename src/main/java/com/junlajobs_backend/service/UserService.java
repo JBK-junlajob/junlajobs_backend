@@ -5,6 +5,9 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.exception.BaseException;
 import com.junlajobs_backend.exception.UserException;
@@ -19,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +43,11 @@ public class UserService {
     }
 
     public String saveUser(UserEntity user) throws ExecutionException, InterruptedException {
-        //TODO: check duplicate username
+        // check duplicate username
+        if(this.getUser(user.getUsername())!=null){
+            return null;
+        }
+
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
         String passwordEncoded = passwordEncoder.encode(user.getUserDetail().getPassword());
@@ -164,6 +172,12 @@ public class UserService {
             user.getUserDetail().setProfilePicUrl(detail.getProfilePicUrl());
         }
         return updateUser(user);
+    }
+
+    public String testFirebaseAuth() throws FirebaseAuthException {
+        FirebaseAuth auth =FirebaseAuth.getInstance();
+        Firestore firestore = FirestoreClient.getFirestore();
+        return "";
     }
 
 

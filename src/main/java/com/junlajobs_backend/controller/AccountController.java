@@ -1,5 +1,6 @@
 package com.junlajobs_backend.controller;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.junlajobs_backend.exception.BaseException;
 import com.junlajobs_backend.model.entity.UserDetailEntity;
 import com.junlajobs_backend.model.entity.UserEntity;
@@ -63,6 +64,11 @@ public class AccountController {
     @PostMapping("/edit")
     public String register(@RequestBody UserDetailEntity detail) {
         return userService.editUser(detail);
+    }
+
+    @GetMapping("/testauth")
+    public String testauth() throws FirebaseAuthException {
+        return userService.testFirebaseAuth();
     }
 
 

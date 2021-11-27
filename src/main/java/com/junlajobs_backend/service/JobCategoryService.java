@@ -32,7 +32,7 @@ public class JobCategoryService {
         return typeList;
     }
 
-    public List<PostEntity> getPortfolioListByType(String category) throws ExecutionException, InterruptedException {
+    public List<PostEntity> getPortfolioListByCategory(String category) throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
         CollectionReference portfolio = dbFireStore.collection(CollectionName.COLLECTION_Portfolio);
