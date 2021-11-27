@@ -27,8 +27,6 @@ import java.nio.file.Files;
 @Service
 public class FileService {
 
-    private static final String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/junlajob-project.appspot.com/o/%s?alt=media";
-
     @Autowired
     private UserService userService;
 
@@ -41,7 +39,7 @@ public class FileService {
         Credentials credentials = GoogleCredentials.fromStream(new FileInputStream("./firebaseAccountKey.json"));
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-        return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+        return "https://firebasestorage.googleapis.com/v0/b/junlajob-project.appspot.com/o/"+fileName+"?alt=media";
     }
 
     private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
