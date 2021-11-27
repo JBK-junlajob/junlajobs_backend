@@ -21,7 +21,7 @@ public class JobCategoryController {
 
     @GetMapping("/listall")
     public List<String> listAll() throws ExecutionException, InterruptedException {
-        return jobCategoryService.allType();
+        return jobCategoryService.allCategory();
     }
 
     @GetMapping("/getlistfromtype/{category}")

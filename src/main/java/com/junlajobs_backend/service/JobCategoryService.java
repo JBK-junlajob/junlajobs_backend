@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutionException;
 public class JobCategoryService {
 
 
-    public List<String> allType() {
+    public List<String> allCategory() {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
         List<String> typeList = new ArrayList<>();

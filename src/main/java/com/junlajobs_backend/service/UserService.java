@@ -1,10 +1,7 @@
 package com.junlajobs_backend.service;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -12,10 +9,12 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.exception.BaseException;
 import com.junlajobs_backend.exception.UserException;
 import com.junlajobs_backend.helper.CollectionName;
+import com.junlajobs_backend.model.entity.PostEntity;
 import com.junlajobs_backend.model.entity.UserDetailEntity;
 import com.junlajobs_backend.model.entity.UserEntity;
 import com.junlajobs_backend.model.request.LoginRequest;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -132,6 +132,37 @@ public class UserService {
         throw UserException.loginFail();
     }
 
+
+    public String loginViaEmail(String email) throws BaseException, ExecutionException, InterruptedException {
+        UserEntity user = this.getUserByEmail(email);
+        if (user == null) {
+            throw UserException.loginFail();
+        } else if (user != null ) {
+            return tokenService.tokenize(user);
+        }
+        throw UserException.loginFail();
+    }
+
+
+    public UserEntity getUserByEmail(String email) throws BaseException, ExecutionException, InterruptedException {
+        Firestore dbFireStore = FirestoreClient.getFirestore();
+        CollectionReference collectionUser = dbFireStore.collection(CollectionName.COLLECTION_USER);
+
+        Query query = collectionUser.whereEqualTo("email", email);
+
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+        UserEntity userEntity = new UserEntity();
+
+        DocumentSnapshot document = querySnapshot.get().getDocuments().get(0);
+        if (ObjectUtils.isNotEmpty(document)) {
+            userEntity.setUsername(document.getId());
+            userEntity.setUserDetail(document.toObject(UserDetailEntity.class));
+            return userEntity;
+        }
+
+        return null;
+    }
 
     public boolean checkOldPassword(String oldPass) throws BaseException, ExecutionException, InterruptedException {
         if (StringUtils.isBlank(oldPass)) {

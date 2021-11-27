@@ -62,13 +62,23 @@ public class AccountController {
     }
 
     @PostMapping("/edit")
-    public String register(@RequestBody UserDetailEntity detail) {
+    public String editUser(@RequestBody UserDetailEntity detail) {
         return userService.editUser(detail);
     }
 
     @GetMapping("/testauth")
     public String testauth() throws FirebaseAuthException {
         return userService.testFirebaseAuth();
+    }
+
+    @GetMapping("/getuserbyemail/{email}")
+    public UserEntity getUserByEmail(@PathVariable(value = "email") String email) throws FirebaseAuthException, BaseException, ExecutionException, InterruptedException {
+        return userService.getUserByEmail(email);
+    }
+
+    @GetMapping("/loginbyemail/{email}")
+    public String lolginByEmail(@PathVariable(value = "email") String email) throws FirebaseAuthException, BaseException, ExecutionException, InterruptedException {
+        return userService.loginViaEmail(email);
     }
 
 
