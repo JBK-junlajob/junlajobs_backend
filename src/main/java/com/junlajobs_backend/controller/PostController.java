@@ -77,5 +77,15 @@ public class PostController {
         return postService.editRec(post);
     }
 
+    @GetMapping("/searchport/{key}")
+    public List<PostEntity> searchPort(@PathVariable String key) throws ExecutionException, InterruptedException {
+        return postService.searchPort(key);
+    }
+
+    @GetMapping("/searchrec/{key}")
+    public List<PostEntity> searchRec(@PathVariable String key) throws ExecutionException, InterruptedException {
+        return postService.searchRec(key);
+    }
+
 
 }
