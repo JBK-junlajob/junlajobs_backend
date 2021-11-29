@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import com.junlajobs_backend.helper.CollectionName;
+import com.junlajobs_backend.model.entity.JobTypeEntity;
 import com.junlajobs_backend.model.entity.PostDetailEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
 import org.springframework.stereotype.Service;
@@ -17,16 +18,23 @@ import java.util.concurrent.ExecutionException;
 public class JobTypeService {
 
 
-    public List<String> allType() {
+    public List<JobTypeEntity> allType() throws ExecutionException, InterruptedException {
         Firestore dbFireStore = FirestoreClient.getFirestore();
 
-        List<String> typeList = new ArrayList<>();
+        List<JobTypeEntity> typeList = new ArrayList<>();
         Iterable<DocumentReference> documentReference = dbFireStore.collection(CollectionName.COLLECTION_JOBTYPE).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
 
         while (iterator.hasNext()) {
+            JobTypeEntity jobType = new JobTypeEntity();
+
             DocumentReference document = iterator.next();
-            typeList.add(document.getId());
+            ApiFuture<DocumentSnapshot> future = document.get();
+            DocumentSnapshot snapshot = future.get();
+
+            jobType.setJob_type(document.getId());
+            jobType.setPicurl(snapshot.toObject(JobTypeEntity.class).getPicurl());
+            typeList.add(jobType);
         }
 
         return typeList;

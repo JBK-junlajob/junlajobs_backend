@@ -1,5 +1,6 @@
 package com.junlajobs_backend.controller;
 
+import com.junlajobs_backend.model.entity.JobTypeEntity;
 import com.junlajobs_backend.model.entity.PostEntity;
 import com.junlajobs_backend.service.JobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class JobTypeController {
     private JobTypeService jobTypeService;
 
     @GetMapping("/listall")
-    public List<String> listAll() throws ExecutionException, InterruptedException {
+    public List<JobTypeEntity> listAll() throws ExecutionException, InterruptedException {
         return jobTypeService.allType();
     }
 
