@@ -24,7 +24,7 @@ public class JobCategoryController {
         return jobCategoryService.allCategory();
     }
 
-    @GetMapping("/getlistfromtype/{category}")
+    @GetMapping("/getlistfromcategory/{category}")
     public List<PostEntity> listPortFromType(@PathVariable(value = "category") String category) throws ExecutionException, InterruptedException {
         return jobCategoryService.getPortfolioListByCategory(category);
     }
