@@ -202,8 +202,13 @@ public class UserService {
         if (StringUtils.isNotBlank(detail.getProfilePicUrl())) {
             user.getUserDetail().setProfilePicUrl(detail.getProfilePicUrl());
         }
-        if(ObjectUtils.isNotEmpty(auth.getUserByEmail(user.getUserDetail().getEmail()))){
-            user.getUserDetail().setUid(auth.getUserByEmail(user.getUserDetail().getEmail()).getUid());
+        try {
+            Object userRecord = auth.getUserByEmail(user.getUserDetail().getEmail());
+            if (!ObjectUtils.isEmpty(userRecord)) {
+                user.getUserDetail().setUid(auth.getUserByEmail(user.getUserDetail().getEmail()).getUid());
+            }
+        } catch (FirebaseAuthException e) {
+            e.printStackTrace();
         }
         return updateUser(user);
     }
