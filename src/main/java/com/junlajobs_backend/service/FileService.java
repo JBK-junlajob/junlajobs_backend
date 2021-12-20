@@ -84,7 +84,7 @@ public class FileService {
             PostEntity post = postService.getPort(portId);
             post.getPostDetail().setPicUrl(TEMP_URL);
             postService.editPortfolio(post);
-            return  ResponseEntity.ok("Successfully Uploaded! url ="+ TEMP_URL);                     // Your customized response
+            return  ResponseEntity.ok(TEMP_URL);                     // Your customized response
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Unsuccessfully Uploaded!");
@@ -102,7 +102,7 @@ public class FileService {
             PostEntity post = postService.getRec(recId);
             post.getPostDetail().setPicUrl(TEMP_URL);
             postService.editRec(post);
-            return  ResponseEntity.ok("Successfully Uploaded! url ="+ TEMP_URL);                     // Your customized response
+            return  ResponseEntity.ok(TEMP_URL);                     // Your customized response
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Unsuccessfully Uploaded!");
