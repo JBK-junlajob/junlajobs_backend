@@ -66,7 +66,7 @@ public class FileService {
             UserEntity user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
             user.getUserDetail().setProfilePicUrl(TEMP_URL);
             userService.editUser(user.getUserDetail());
-            return  ResponseEntity.ok("Successfully Uploaded! url ="+ TEMP_URL);                     // Your customized response
+            return  ResponseEntity.ok(TEMP_URL);                     // Your customized response
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Unsuccessfully Uploaded!");
